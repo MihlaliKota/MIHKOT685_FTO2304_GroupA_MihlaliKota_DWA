@@ -10,6 +10,10 @@ form.addEventListener("submit", (event) => {
   if (dividend === "" || divider === "") {
     result.innerText =
       "Division not performed. Both values are required in inputs. Try again.";
+  } else if (isNaN(dividend) || isNaN(divider) || parseFloat(divider) < 0) {
+    result.innerText =
+      "Division not performed. Invalid number provided. Try again.";
+    console.error("Invalid division:", dividend, divider);
   } else {
     result.innerText = Math.floor(dividend / divider);
   }
