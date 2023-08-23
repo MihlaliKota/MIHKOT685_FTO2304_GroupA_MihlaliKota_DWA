@@ -8,14 +8,20 @@ form.addEventListener("submit", (event) => {
   try {
     const entries = new FormData(event.target);
     const { dividend, divider } = Object.fromEntries(entries);
+   
     if (dividend === "" || divider === "") {
       result.innerText =
         "Division not performed. Both values are required in inputs. Try again.";
-    } else if (dividend && divider && parseFloat(divider) < 0) {
+      throw new Error("Input missing");
+    } 
+    
+    if (dividend && divider && parseFloat(divider) < 0) {
       result.innerText =
         "Division not performed. Invalid number provided. Try again.";
-      console.error("Invalid division:", dividend, divider);
-    } else if (isNaN(dividend) || isNaN(divider)) {
+      throw new Error("Invalid division:", dividend, divider);
+    } 
+    
+    if (isNaN(dividend) || isNaN(divider)) {
       document.body.innerHTML =
         "Something critical went wrong. Please reload the page.";
       throw new Error("Invalid inputs");
