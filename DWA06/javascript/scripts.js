@@ -49,35 +49,81 @@ function renderInitialBookPreviews(bookList, count, authors, containerSelector) 
 // Render initial book previews
 renderInitialBookPreviews(matches, BOOKS_PER_PAGE, authors, "[data-list-items]");
 
-const genreHtml = document.createDocumentFragment();
-const firstGenreElement = document.createElement("option");
-firstGenreElement.value = "any";
-firstGenreElement.innerText = "All Genres";
-genreHtml.appendChild(firstGenreElement);
-
-for (const [id, name] of Object.entries(genres)) {
-  const element = document.createElement("option");
-  element.value = id;
-  element.innerText = name;
-  genreHtml.appendChild(element);
+/**
+ * Creates and returns a genre option element.
+ * @param {string} value - The value attribute.
+ * @param {string} text - The text content.
+ * @returns {HTMLElement} The created genre option element.
+ */
+function createGenreOption(value, text) {
+    const option = document.createElement("option");
+    option.value = value;
+    option.innerText = text;
+    return option;
 }
 
-document.querySelector("[data-search-genres]").appendChild(genreHtml);
+/**
+ * Renders genre options in the specified container.
+ * @param {Object} genres - The genres object.
+ * @param {string} containerSelector - The selector of the container.
+ */
+function renderGenreOptions(genres, containerSelector) {
+    const genreHtml = document.createDocumentFragment();
 
-const authorsHtml = document.createDocumentFragment();
-const firstAuthorElement = document.createElement("option");
-firstAuthorElement.value = "any";
-firstAuthorElement.innerText = "All Authors";
-authorsHtml.appendChild(firstAuthorElement);
+    // Create "All Genres" option
+    const allGenresOption = createGenreOption("any", "All Genres");
+    genreHtml.appendChild(allGenresOption);
 
-for (const [id, name] of Object.entries(authors)) {
-  const element = document.createElement("option");
-  element.value = id;
-  element.innerText = name;
-  authorsHtml.appendChild(element);
+    // Create options for each genre
+    for (const [id, name] of Object.entries(genres)) {
+        const genreOption = createGenreOption(id, name);
+        genreHtml.appendChild(genreOption);
+    }
+
+    const container = document.querySelector(containerSelector);
+    container.appendChild(genreHtml);
 }
 
-document.querySelector("[data-search-authors]").appendChild(authorsHtml);
+// Render genre options
+renderGenreOptions(genres, "[data-search-genres]");
+
+/**
+ * Creates and returns an author option element.
+ * @param {string} value - The value attribute.
+ * @param {string} text - The text content.
+ * @returns {HTMLElement} The created author option element.
+ */
+function createAuthorOption(value, text) {
+    const option = document.createElement("option");
+    option.value = value;
+    option.innerText = text;
+    return option;
+}
+
+/**
+ * Renders author options in the specified container.
+ * @param {Object} authors - The authors object.
+ * @param {string} containerSelector - The selector of the container.
+ */
+function renderAuthorOptions(authors, containerSelector) {
+    const authorsHtml = document.createDocumentFragment();
+
+    // Create "All Authors" option
+    const allAuthorsOption = createAuthorOption("any", "All Authors");
+    authorsHtml.appendChild(allAuthorsOption);
+
+    // Create options for each author
+    for (const [id, name] of Object.entries(authors)) {
+        const authorOption = createAuthorOption(id, name);
+        authorsHtml.appendChild(authorOption);
+    }
+
+    const container = document.querySelector(containerSelector);
+    container.appendChild(authorsHtml);
+}
+
+// Render author options
+renderAuthorOptions(authors, "[data-search-authors]");
 
 if (
   window.matchMedia &&
