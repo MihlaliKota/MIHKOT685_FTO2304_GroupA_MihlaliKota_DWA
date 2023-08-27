@@ -3,29 +3,51 @@ import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
 let page = 1;
 let matches = books;
 
-const starting = document.createDocumentFragment();
+/**
+ * Renders a book preview element.
+ * @param {Object} book - The book object.
+ * @param {Object} authors - The authors object.
+ * @returns {HTMLElement} The created preview element.
+ */
+function createBookPreview(book, authors) {
+    const { author, id, image, title } = book;
 
-for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
-  const element = document.createElement("button");
-  element.classList = "preview";
-  element.setAttribute("data-preview", id);
+    const previewElement = document.createElement("button");
+    previewElement.classList.add("preview");
+    previewElement.setAttribute("data-preview", id);
 
-  element.innerHTML = `
-        <img
-            class="preview__image"
-            src="${image}"
-        />
-        
+    previewElement.innerHTML = `
+        <img class="preview__image" src="${image}" />
         <div class="preview__info">
             <h3 class="preview__title">${title}</h3>
             <div class="preview__author">${authors[author]}</div>
         </div>
     `;
 
-  starting.appendChild(element);
+    return previewElement;
 }
 
-document.querySelector("[data-list-items]").appendChild(starting);
+/**
+ * Renders the initial book previews.
+ * @param {Array} bookList - The list of books.
+ * @param {number} count - The number of books to render.
+ * @param {Object} authors - The authors object.
+ * @param {string} containerSelector - The selector of the container.
+ */
+function renderInitialBookPreviews(bookList, count, authors, containerSelector) {
+    const startingFragment = document.createDocumentFragment();
+
+    for (const book of bookList.slice(0, count)) {
+        const previewElement = createBookPreview(book, authors);
+        startingFragment.appendChild(previewElement);
+    }
+
+    const container = document.querySelector(containerSelector);
+    container.appendChild(startingFragment);
+}
+
+// Render initial book previews
+renderInitialBookPreviews(matches, BOOKS_PER_PAGE, authors, "[data-list-items]");
 
 const genreHtml = document.createDocumentFragment();
 const firstGenreElement = document.createElement("option");
