@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
 
 let page = 1;
@@ -9,6 +10,7 @@ let matches = books;
  * @param {Object} authors - The authors object.
  * @returns {HTMLElement} The created preview element.
  */
+// eslint-disable-next-line no-shadow
 function createBookPreview(book, authors) {
     const { author, id, image, title } = book;
 
@@ -34,9 +36,11 @@ function createBookPreview(book, authors) {
  * @param {Object} authors - The authors object.
  * @param {string} containerSelector - The selector of the container.
  */
+// eslint-disable-next-line no-shadow
 function InitialBookPreviews(bookList, count, authors, containerSelector) {
     const startingFragment = document.createDocumentFragment();
 
+    // eslint-disable-next-line no-restricted-syntax
     for (const book of bookList.slice(0, count)) {
         const previewElement = createBookPreview(book, authors);
         startingFragment.appendChild(previewElement);
@@ -67,6 +71,7 @@ function createGenreOption(value, text) {
  * @param {Object} genres - The genres object.
  * @param {string} containerSelector - The selector of the container.
  */
+// eslint-disable-next-line no-shadow
 function GenreOptions(genres, containerSelector) {
     const genreHtml = document.createDocumentFragment();
 
@@ -75,6 +80,7 @@ function GenreOptions(genres, containerSelector) {
     genreHtml.appendChild(allGenresOption);
 
     // Create options for each genre
+    // eslint-disable-next-line no-restricted-syntax
     for (const [id, name] of Object.entries(genres)) {
         const genreOption = createGenreOption(id, name);
         genreHtml.appendChild(genreOption);
@@ -105,6 +111,7 @@ function createAuthorOption(value, text) {
  * @param {Object} authors - The authors object.
  * @param {string} containerSelector - The selector of the container.
  */
+// eslint-disable-next-line no-shadow
 function AuthorOptions(authors, containerSelector) {
     const authorsHtml = document.createDocumentFragment();
 
@@ -113,6 +120,7 @@ function AuthorOptions(authors, containerSelector) {
     authorsHtml.appendChild(allAuthorsOption);
 
     // Create options for each author
+    // eslint-disable-next-line no-restricted-syntax
     for (const [id, name] of Object.entries(authors)) {
         const authorOption = createAuthorOption(id, name);
         authorsHtml.appendChild(authorOption);
