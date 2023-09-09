@@ -1,62 +1,131 @@
+/* eslint-disable no-shadow */
 /* eslint-disable no-restricted-syntax */
 import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
 
 let page = 1;
 let matches = books;
 
-const starting = document.createDocumentFragment();
+/**
+ * Renders a book preview element.
+ * @param {Object} book - The book object.
+ * @param {Object} authors - The authors object.
+ * @returns {HTMLElement} The created preview element.
+ */
+function createBookPreview(book, authors) {
+    const { author, id, image, title } = book;
 
-for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
-  const element = document.createElement("button");
-  element.classList = "preview";
-  element.setAttribute("data-preview", id);
+    const previewElement = document.createElement("button");
+    previewElement.classList.add("preview");
+    previewElement.setAttribute("data-preview", id);
 
-  element.innerHTML = `
-        <img
-            class="preview__image"
-            src="${image}"
-        />
-        
+    previewElement.innerHTML = `
+        <img class="preview__image" src="${image}" />
         <div class="preview__info">
             <h3 class="preview__title">${title}</h3>
             <div class="preview__author">${authors[author]}</div>
         </div>
     `;
 
-  starting.appendChild(element);
+    return previewElement;
 }
 
-document.querySelector("[data-list-items]").appendChild(starting);
+/**
+ * Renders the initial book previews.
+ * @param {Array} bookList - The list of books.
+ * @param {number} count - The number of books to render.
+ * @param {Object} authors - The authors object.
+ * @param {string} containerSelector - The selector of the container.
+ */
+function InitialBookPreviews(bookList, count, authors, containerSelector) {
+    const startingFragment = document.createDocumentFragment();
 
-const genreHtml = document.createDocumentFragment();
-const firstGenreElement = document.createElement("option");
-firstGenreElement.value = "any";
-firstGenreElement.innerText = "All Genres";
-genreHtml.appendChild(firstGenreElement);
+    for (const book of bookList.slice(0, count)) {
+        const previewElement = createBookPreview(book, authors);
+        startingFragment.appendChild(previewElement);
+    }
 
-for (const [id, name] of Object.entries(genres)) {
-  const element = document.createElement("option");
-  element.value = id;
-  element.innerText = name;
-  genreHtml.appendChild(element);
+    const container = document.querySelector(containerSelector);
+    container.appendChild(startingFragment);
 }
 
-document.querySelector("[data-search-genres]").appendChild(genreHtml);
+// Render initial book previews
+InitialBookPreviews(matches, BOOKS_PER_PAGE, authors, "[data-list-items]");
 
-const authorsHtml = document.createDocumentFragment();
-const firstAuthorElement = document.createElement("option");
-firstAuthorElement.value = "any";
-firstAuthorElement.innerText = "All Authors";
-authorsHtml.appendChild(firstAuthorElement);
-
-for (const [id, name] of Object.entries(authors)) {
-  const element = document.createElement("option");
-  element.value = id;
-  element.innerText = name;
-  authorsHtml.appendChild(element);
+/**
+ * Creates and returns a genre option element.
+ * @param {string} value - The value attribute.
+ * @param {string} text - The text content.
+ * @returns {HTMLElement} The created genre option element.
+ */
+function createGenreOption(value, text) {
+    const option = document.createElement("option");
+    option.value = value;
+    option.innerText = text;
+    return option;
 }
 
-document.querySelector("[data-search-authors]").appendChild(authorsHtml);
+/**
+ * Renders genre options in the specified container.
+ * @param {Object} genres - The genres object.
+ * @param {string} containerSelector - The selector of the container.
+ */
+function GenreOptions(genres, containerSelector) {
+    const genreHtml = document.createDocumentFragment();
+
+    // Create "All Genres" option
+    const allGenresOption = createGenreOption("any", "All Genres");
+    genreHtml.appendChild(allGenresOption);
+
+    // Create options for each genre
+    for (const [id, name] of Object.entries(genres)) {
+        const genreOption = createGenreOption(id, name);
+        genreHtml.appendChild(genreOption);
+    }
+
+    const container = document.querySelector(containerSelector);
+    container.appendChild(genreHtml);
+}
+
+// Render genre options
+GenreOptions(genres, "[data-search-genres]");
+
+/**
+ * Creates and returns an author option element.
+ * @param {string} value - The value attribute.
+ * @param {string} text - The text content.
+ * @returns {HTMLElement} The created author option element.
+ */
+function createAuthorOption(value, text) {
+    const option = document.createElement("option");
+    option.value = value;
+    option.innerText = text;
+    return option;
+}
+
+/**
+ * Renders author options in the specified container.
+ * @param {Object} authors - The authors object.
+ * @param {string} containerSelector - The selector of the container.
+ */
+function AuthorOptions(authors, containerSelector) {
+    const authorsHtml = document.createDocumentFragment();
+
+    // Create "All Authors" option
+    const allAuthorsOption = createAuthorOption("any", "All Authors");
+    authorsHtml.appendChild(allAuthorsOption);
+
+    // Create options for each author
+    for (const [id, name] of Object.entries(authors)) {
+        const authorOption = createAuthorOption(id, name);
+        authorsHtml.appendChild(authorOption);
+    }
+
+    const container = document.querySelector(containerSelector);
+    container.appendChild(authorsHtml);
+}
+
+// Render author options
+AuthorOptions(authors, "[data-search-authors]");
 
 if (
   window.matchMedia &&
@@ -71,20 +140,33 @@ if (
   document.documentElement.style.setProperty("--color-light", "255, 255, 255");
 }
 
-document.querySelector("[data-list-button]").innerText = `Show more (${
-  books.length - BOOKS_PER_PAGE
-})`;
-document.querySelector("[data-list-button]").disabled =
-  matches.length - page * BOOKS_PER_PAGE > 0;
+const listButton = document.querySelector("[data-list-button]");
+const remainingBooks = matches.length - page * BOOKS_PER_PAGE;
 
-document.querySelector("[data-list-button]").innerHTML = `
-    <span>Show more</span>
-    <span class="list__remaining"> (${
-      matches.length - page * BOOKS_PER_PAGE > 0
-        ? matches.length - page * BOOKS_PER_PAGE
-        : 0
-    })</span>
-`;
+/**
+ * Updates the text content and disabled status of the list button.
+ * @param {number} remaining - The number of remaining books.
+ */
+function updateListButton(remaining) {
+  listButton.innerText = `Show more (${remaining})`;
+  listButton.disabled = remaining > 0;
+}
+
+/**
+ * Renders the list button's remaining book count.
+ * @param {number} remaining - The number of remaining books.
+ */
+function ListButtonRemaining(remaining) {
+  const remainingHtml = `
+        <span>Show more</span>
+        <span class="list__remaining"> (${remaining > 0 ? remaining : 0})</span>
+    `;
+  listButton.innerHTML = remainingHtml;
+}
+
+// Update and render list button content
+updateListButton(remainingBooks);
+ListButtonRemaining(remainingBooks);
 
 document.querySelector("[data-search-cancel]").addEventListener("click", () => {
   document.querySelector("[data-search-overlay]").open = false;

@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable no-restricted-syntax */
 import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
 
