@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+sl-button {
+    font-size: 18px;
+    margin: 5px;
+}
+
+#counter {
+    font-size: 36px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+#confirmation {
+    color: green;
+    font-weight: bold;
+    display: none;
+}
+
+sl-button-group {
+    margin-top: 20px;
+}
