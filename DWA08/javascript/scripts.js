@@ -11,7 +11,8 @@ let matches = books;
  * @returns {HTMLElement} The created preview element.
  */
 // eslint-disable-next-line no-shadow
-function createBookPreview(book, authors) {
+function createBookPreview(authors) {
+  return function (book) {
     const { author, id, image, title } = book;
 
     const previewElement = document.createElement("button");
@@ -27,6 +28,7 @@ function createBookPreview(book, authors) {
     `;
 
     return previewElement;
+  };
 }
 
 /**
@@ -37,21 +39,22 @@ function createBookPreview(book, authors) {
  * @param {string} containerSelector - The selector of the container.
  */
 // eslint-disable-next-line no-shadow
-function InitialBookPreviews(bookList, count, authors, containerSelector) {
-    const startingFragment = document.createDocumentFragment();
+function initialBookPreviews(bookList, count, authors, containerSelector) {
+  const createPreview = createBookPreview(authors);
+  const startingFragment = document.createDocumentFragment();
 
-    // eslint-disable-next-line no-restricted-syntax
-    for (const book of bookList.slice(0, count)) {
-        const previewElement = createBookPreview(book, authors);
-        startingFragment.appendChild(previewElement);
-    }
+  for (const book of bookList.slice(0, count)) {
+    const previewElement = createPreview(book);
+    startingFragment.appendChild(previewElement);
+  }
 
-    const container = document.querySelector(containerSelector);
-    container.appendChild(startingFragment);
+  const container = document.querySelector(containerSelector);
+  container.appendChild(startingFragment);
 }
 
-// Render initial book previews
-InitialBookPreviews(matches, BOOKS_PER_PAGE, authors, "[data-list-items]");
+const createPreview = createBookPreview(authors);
+initialBookPreviews(matches, BOOKS_PER_PAGE, authors, "[data-list-items]");
+
 
 /**
  * Creates and returns a genre option element.
