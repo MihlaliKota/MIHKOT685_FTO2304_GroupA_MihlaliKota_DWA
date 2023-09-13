@@ -33,7 +33,6 @@ function createBookPreviews(
   container.appendChild(startingFragment);
 }
 
-// Usage:
 createBookPreviews(
   matches,
   BOOKS_PER_PAGE,
