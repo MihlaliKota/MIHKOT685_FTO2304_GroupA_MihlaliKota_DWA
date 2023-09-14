@@ -1,10 +1,11 @@
 // Variables for DOM elements
-const dom = {
+export const dom = {
   list: {
     button: document.querySelector("[data-list-button]"),
     message: document.querySelector("[data-list-message]"),
     overlay: document.querySelector("[data-list-active]"),
     items: document.querySelector("[data-list-items]"),
+    blur: document.querySelector("[data-list-blur]"),
     image: document.querySelector("[data-list-image]"),
     title: document.querySelector("[data-list-title]"),
     subtitle: document.querySelector("[data-list-subtitle]"),

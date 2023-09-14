@@ -1,4 +1,5 @@
 import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
+import { dom } from "./dom.js";
 
 let page = 1;
 let matches = books;
@@ -7,10 +8,9 @@ function createBookPreviews(
   bookList,
   count,
   authors,
-  containerSelector
+  container
 ) {
   const startingFragment = document.createDocumentFragment();
-  const container = document.querySelector(containerSelector);
 
   for (const book of bookList.slice(0, count)) {
     const { author, id, image, title } = book;
@@ -37,7 +37,7 @@ createBookPreviews(
   matches,
   BOOKS_PER_PAGE,
   authors,
-  "[data-list-items]"
+  dom.list.items
 );
 
 
@@ -176,16 +176,14 @@ document.querySelector("[data-header-search]").addEventListener("click", () => {
 document
   .querySelector("[data-header-settings]")
   .addEventListener("click", () => {
-    document.querySelector("[data-settings-overlay]").open = true;
+    dom.settings.overlay.open = true;
   });
 
-document.querySelector("[data-list-close]").addEventListener("click", () => {
-  document.querySelector("[data-list-active]").open = false;
+dom.list.close.addEventListener("click", () => {
+  dom.list.overlay.open = false;
 });
 
-document
-  .querySelector("[data-settings-form]")
-  .addEventListener("submit", (event) => {
+dom.settings.form.addEventListener("submit", (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const { theme } = Object.fromEntries(formData);
@@ -204,12 +202,10 @@ document
       );
     }
 
-    document.querySelector("[data-settings-overlay]").open = false;
+    dom.settings.overlay.open = false;
   });
 
-document
-  .querySelector("[data-search-form]")
-  .addEventListener("submit", (event) => {
+dom.search.form.addEventListener("submit", (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const filters = Object.fromEntries(formData);
@@ -239,16 +235,12 @@ document
     matches = result;
 
     if (result.length < 1) {
-      document
-        .querySelector("[data-list-message]")
-        .classList.add("list__message_show");
+      dom.list.message.classList.add("list__message_show");
     } else {
-      document
-        .querySelector("[data-list-message]")
-        .classList.remove("list__message_show");
+      dom.list.message.classList.remove("list__message_show");
     }
 
-    document.querySelector("[data-list-items]").innerHTML = "";
+    dom.list.items.innerHTML = "";
     const newItems = document.createDocumentFragment();
 
     for (const { author, id, image, title } of result.slice(
@@ -274,11 +266,11 @@ document
       newItems.appendChild(element);
     }
 
-    document.querySelector("[data-list-items]").appendChild(newItems);
-    document.querySelector("[data-list-button]").disabled =
+    dom.list.items.appendChild(newItems);
+    dom.list.button.disabled =
       matches.length - page * BOOKS_PER_PAGE < 1;
 
-    document.querySelector("[data-list-button]").innerHTML = `
+    dom.list.button.innerHTML = `
         <span>Show more</span>
         <span class="list__remaining"> (${
           matches.length - page * BOOKS_PER_PAGE > 0
@@ -288,10 +280,10 @@ document
     `;
 
     window.scrollTo({ top: 0, behavior: "smooth" });
-    document.querySelector("[data-search-overlay]").open = false;
+    dom.search.overlay.open = false;
   });
 
-document.querySelector("[data-list-button]").addEventListener("click", () => {
+dom.list.button.addEventListener("click", () => {
   const fragment = document.createDocumentFragment();
 
   for (const { author, id, image, title } of matches.slice(
@@ -317,13 +309,11 @@ document.querySelector("[data-list-button]").addEventListener("click", () => {
     fragment.appendChild(element);
   }
 
-  document.querySelector("[data-list-items]").appendChild(fragment);
+  dom.list.items.appendChild(fragment);
   page += 1;
 });
 
-document
-  .querySelector("[data-list-items]")
-  .addEventListener("click", (event) => {
+dom.list.items.addEventListener("click", (event) => {
     const pathArray = Array.from(event.path || event.composedPath());
     let active = null;
 
@@ -343,14 +333,14 @@ document
     }
 
     if (active) {
-      document.querySelector("[data-list-active]").open = true;
-      document.querySelector("[data-list-blur]").src = active.image;
-      document.querySelector("[data-list-image]").src = active.image;
-      document.querySelector("[data-list-title]").innerText = active.title;
-      document.querySelector("[data-list-subtitle]").innerText = `${
+      dom.list.overlay.open = true;
+      dom.list.blur.src = active.image;
+      dom.list.image.src = active.image;
+      dom.list.title.innerText = active.title;
+      dom.list.subtitle.innerText = `${
         authors[active.author]
       } (${new Date(active.published).getFullYear()})`;
-      document.querySelector("[data-list-description]").innerText =
+      dom.list.description.innerText =
         active.description;
     }
   });
