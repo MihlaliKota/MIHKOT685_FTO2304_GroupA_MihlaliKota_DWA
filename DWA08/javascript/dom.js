@@ -30,4 +30,9 @@ export const dom = {
     form: document.querySelector("[data-settings-form]"),
     theme: document.querySelector("[data-settings-theme]"),
   },
+
+  header: {
+    search: document.querySelector("[data-header-search]"),
+    settings: document.querySelector("[data-header-settings]"),
+  },
 };

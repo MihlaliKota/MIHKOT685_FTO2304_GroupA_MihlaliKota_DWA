@@ -12,13 +12,13 @@ let matches = books;
  * @returns {HTMLElement} The created preview element.
  */
 function createBookPreview(book, authors) {
-    const { author, id, image, title } = book;
+  const { author, id, image, title } = book;
 
-    const previewElement = document.createElement("button");
-    previewElement.classList.add("preview");
-    previewElement.setAttribute("data-preview", id);
+  const previewElement = document.createElement("button");
+  previewElement.classList.add("preview");
+  previewElement.setAttribute("data-preview", id);
 
-    previewElement.innerHTML = `
+  previewElement.innerHTML = `
         <img class="preview__image" src="${image}" />
         <div class="preview__info">
             <h3 class="preview__title">${title}</h3>
@@ -26,7 +26,7 @@ function createBookPreview(book, authors) {
         </div>
     `;
 
-    return previewElement;
+  return previewElement;
 }
 
 /**
@@ -37,15 +37,15 @@ function createBookPreview(book, authors) {
  * @param {string} containerSelector - The selector of the container.
  */
 function InitialBookPreviews(bookList, count, authors, containerSelector) {
-    const startingFragment = document.createDocumentFragment();
+  const startingFragment = document.createDocumentFragment();
 
-    for (const book of bookList.slice(0, count)) {
-        const previewElement = createBookPreview(book, authors);
-        startingFragment.appendChild(previewElement);
-    }
+  for (const book of bookList.slice(0, count)) {
+    const previewElement = createBookPreview(book, authors);
+    startingFragment.appendChild(previewElement);
+  }
 
-    const container = document.querySelector(containerSelector);
-    container.appendChild(startingFragment);
+  const container = document.querySelector(containerSelector);
+  container.appendChild(startingFragment);
 }
 
 // Render initial book previews
@@ -58,10 +58,10 @@ InitialBookPreviews(matches, BOOKS_PER_PAGE, authors, "[data-list-items]");
  * @returns {HTMLElement} The created genre option element.
  */
 function createGenreOption(value, text) {
-    const option = document.createElement("option");
-    option.value = value;
-    option.innerText = text;
-    return option;
+  const option = document.createElement("option");
+  option.value = value;
+  option.innerText = text;
+  return option;
 }
 
 /**
@@ -70,20 +70,20 @@ function createGenreOption(value, text) {
  * @param {string} containerSelector - The selector of the container.
  */
 function GenreOptions(genres, containerSelector) {
-    const genreHtml = document.createDocumentFragment();
+  const genreHtml = document.createDocumentFragment();
 
-    // Create "All Genres" option
-    const allGenresOption = createGenreOption("any", "All Genres");
-    genreHtml.appendChild(allGenresOption);
+  // Create "All Genres" option
+  const allGenresOption = createGenreOption("any", "All Genres");
+  genreHtml.appendChild(allGenresOption);
 
-    // Create options for each genre
-    for (const [id, name] of Object.entries(genres)) {
-        const genreOption = createGenreOption(id, name);
-        genreHtml.appendChild(genreOption);
-    }
+  // Create options for each genre
+  for (const [id, name] of Object.entries(genres)) {
+    const genreOption = createGenreOption(id, name);
+    genreHtml.appendChild(genreOption);
+  }
 
-    const container = document.querySelector(containerSelector);
-    container.appendChild(genreHtml);
+  const container = document.querySelector(containerSelector);
+  container.appendChild(genreHtml);
 }
 
 // Render genre options
@@ -96,10 +96,10 @@ GenreOptions(genres, "[data-search-genres]");
  * @returns {HTMLElement} The created author option element.
  */
 function createAuthorOption(value, text) {
-    const option = document.createElement("option");
-    option.value = value;
-    option.innerText = text;
-    return option;
+  const option = document.createElement("option");
+  option.value = value;
+  option.innerText = text;
+  return option;
 }
 
 /**
@@ -108,20 +108,20 @@ function createAuthorOption(value, text) {
  * @param {string} containerSelector - The selector of the container.
  */
 function AuthorOptions(authors, containerSelector) {
-    const authorsHtml = document.createDocumentFragment();
+  const authorsHtml = document.createDocumentFragment();
 
-    // Create "All Authors" option
-    const allAuthorsOption = createAuthorOption("any", "All Authors");
-    authorsHtml.appendChild(allAuthorsOption);
+  // Create "All Authors" option
+  const allAuthorsOption = createAuthorOption("any", "All Authors");
+  authorsHtml.appendChild(allAuthorsOption);
 
-    // Create options for each author
-    for (const [id, name] of Object.entries(authors)) {
-        const authorOption = createAuthorOption(id, name);
-        authorsHtml.appendChild(authorOption);
-    }
+  // Create options for each author
+  for (const [id, name] of Object.entries(authors)) {
+    const authorOption = createAuthorOption(id, name);
+    authorsHtml.appendChild(authorOption);
+  }
 
-    const container = document.querySelector(containerSelector);
-    container.appendChild(authorsHtml);
+  const container = document.querySelector(containerSelector);
+  container.appendChild(authorsHtml);
 }
 
 // Render author options
