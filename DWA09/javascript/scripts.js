@@ -1,55 +1,26 @@
-/* eslint-disable no-shadow */
-/* eslint-disable no-restricted-syntax */
 import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
+import { createBookPreview } from "./bookPreviews.js"
 
 let page = 1;
 let matches = books;
 
-/**
- * Renders a book preview element.
- * @param {Object} book - The book object.
- * @param {Object} authors - The authors object.
- * @returns {HTMLElement} The created preview element.
- */
-function createBookPreview(book, authors) {
-  const { author, id, image, title } = book;
-
-  const previewElement = document.createElement("button");
-  previewElement.classList.add("preview");
-  previewElement.setAttribute("data-preview", id);
-
-  previewElement.innerHTML = `
-        <img class="preview__image" src="${image}" />
-        <div class="preview__info">
-            <h3 class="preview__title">${title}</h3>
-            <div class="preview__author">${authors[author]}</div>
-        </div>
-    `;
-
-  return previewElement;
-}
+const bookPreviews = books.map((book) => createBookPreview(authors)(book));
 
 /**
  * Renders the initial book previews.
- * @param {Array} bookList - The list of books.
- * @param {number} count - The number of books to render.
- * @param {Object} authors - The authors object.
+ * @param {Array} bookPreviews - The list of book preview elements.
  * @param {string} containerSelector - The selector of the container.
  */
-function InitialBookPreviews(bookList, count, authors, containerSelector) {
-  const startingFragment = document.createDocumentFragment();
-
-  for (const book of bookList.slice(0, count)) {
-    const previewElement = createBookPreview(book, authors);
-    startingFragment.appendChild(previewElement);
-  }
-
+function InitialBookPreviews(bookPreviews, containerSelector) {
   const container = document.querySelector(containerSelector);
-  container.appendChild(startingFragment);
+
+  for (const previewElement of bookPreviews) {
+    container.appendChild(previewElement);
+  }
 }
 
 // Render initial book previews
-InitialBookPreviews(matches, BOOKS_PER_PAGE, authors, "[data-list-items]");
+InitialBookPreviews(bookPreviews, "[data-list-items]");
 
 /**
  * Creates and returns a genre option element.
