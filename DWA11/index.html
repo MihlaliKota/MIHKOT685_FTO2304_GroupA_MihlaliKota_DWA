@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.8.0/cdn/themes/light.css"
+    />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.8.0/cdn/shoelace-autoloader.js"
+    ></script>
+    <link rel="stylesheet" href="./css/styles.css" />
+    <script src="./javascript/scripts.js" defer></script>
+    <title>Tally Count</title>
+  </head>
+  <body>
+    <h1>Tally Counter</h1>
+    <sl-button-group>
+      <sl-button id="subtract">Subtract</sl-button>
+      <sl-button id="reset">Reset</sl-button>
+      <sl-button id="add">Add</sl-button>
+    </sl-button-group>
+    <p>Counter: <span id="counter">0</span></p>
+    <div id="confirmation" style="display: none">Counter has been reset!</div>
+    <script>
+      const incrementButton = document.getElementById("add");
+      const decrementButton = document.getElementById("subtract");
+      const resetButton = document.getElementById("reset");
+
+      // Event listener for the "Add" button
+      incrementButton.addEventListener("click", () => {
+        incrementCounter();
+        logStateToConsole();
+      });
+
+      // Event listener for the "Subtract" button
+      decrementButton.addEventListener("click", () => {
+        decrementCounter();
+        logStateToConsole();
+      });
+
+      // Event listener for the "Reset" button
+      resetButton.addEventListener("click", () => {
+        resetCounter();
+        logStateToConsole();
+      });
+
+      // Initial update of the counter in the HTML
+      logStateToConsole();
+    </script>
+  </body>
+</html>
