@@ -1,5 +1,5 @@
 import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
-import { createBookPreview } from "./bookPreviews.js"
+import { createBookPreview } from "./bookPreviews.js";
 
 let page = 1;
 let matches = books;

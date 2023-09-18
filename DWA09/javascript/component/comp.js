@@ -1,4 +1,4 @@
-import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
+import { books, authors } from "./data.js";
 import { createBookPreview } from "./bookPreviews.js";
 
 export class BookList extends HTMLElement {
