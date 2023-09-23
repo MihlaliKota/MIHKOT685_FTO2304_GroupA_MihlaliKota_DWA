@@ -5,8 +5,10 @@ import {
 } from "https://cdn.jsdelivr.net/gh/lit/dist@2/core/lit-core.min.js";
 
 class TallyCountApp extends LitElement {
+  // CSS styles for the component
   static styles = css`
     :host {
+      /* Define CSS custom properties (variables) for easy theme customization */
       --color-green: #31c48d;
       --color-white: #ffffff;
       --color-dark-grey: #33333d;
@@ -23,7 +25,7 @@ class TallyCountApp extends LitElement {
       text-align: center;
     }
 
-    /* Header */
+    /* Header styles */
     .header {
       text-align: center;
     }
@@ -34,12 +36,12 @@ class TallyCountApp extends LitElement {
       color: var(--color-light-grey);
     }
 
-    /* Controls */
+    /* Controls styles */
     .controls {
       background: yellow;
     }
 
-    /* Counter */
+    /* Counter styles */
     .counter {
       background: var(--color-dark-grey);
     }
@@ -85,7 +87,7 @@ class TallyCountApp extends LitElement {
       border-right: 1px solid var(--color-light-grey);
     }
 
-    /* Footer */
+    /* Footer styles */
     .footer {
       background: var(--color-dark-grey);
       color: var(--color-light-grey);
@@ -108,17 +110,19 @@ class TallyCountApp extends LitElement {
   constructor() {
     super();
     this.count = 0;
-    this.minCount = -5;
-    this.maxCount = 15;
+    this.minCount = -5; // Minimum count value
+    this.maxCount = 5; // Maximum count value
   }
 
   updated(changedProperties) {
+    // Update text color when the count property changes
     if (changedProperties.has("count")) {
       this.updateTextColor();
     }
   }
 
   updateTextColor() {
+    // Change text color to red when count reaches minimum or maximum
     if (this.count === this.minCount || this.count === this.maxCount) {
       this.style.setProperty("--text-color", "red");
     } else {
@@ -127,30 +131,35 @@ class TallyCountApp extends LitElement {
   }
 
   increaseCount() {
+    // Increase the count if it's less than the maximum
     if (this.count < this.maxCount) {
       this.count++;
     }
   }
 
   decreaseCount() {
+    // Decrease the count if it's greater than the minimum
     if (this.count > this.minCount) {
       this.count--;
     }
   }
 
   resetCount() {
+    // Reset the count to zero
     this.count = 0;
   }
 
   render() {
     let message = "";
 
+    // Display messages based on the count value
     if (this.count === this.maxCount) {
       message = "Maximum reached!";
     } else if (this.count === this.minCount) {
       message = "Minimum reached!";
     }
 
+    // Render the HTML template
     return html`
       <div class="header">
         <h1 class="header__title">Tally Count App</h1>
