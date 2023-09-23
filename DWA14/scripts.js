@@ -7,40 +7,95 @@ import {
 class TallyCountApp extends LitElement {
   static styles = css`
     :host {
-      display: block;
-      font-family: Arial, sans-serif;
+      --color-green: #31c48d;
+      --color-white: #ffffff;
+      --color-dark-grey: #33333d;
+      --color-medium-grey: #424250;
+      --color-light-grey: #9ca3ae;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100vh;
+      margin: 0;
+      background: var(--color-medium-grey);
+      color: var(--color-white);
+      font-family: Roboto, Arial, Helvetica, sans-serif;
       text-align: center;
     }
 
-    .count {
-      font-size: 2rem;
-      color: var(--text-color, black);
+    /* Header */
+    .header {
+      text-align: center;
     }
 
-    .reset-message {
-      color: red;
+    .header__title {
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--color-light-grey);
     }
 
-    .buttons {
+    /* Controls */
+    .controls {
+      background: yellow;
+    }
+
+    /* Counter */
+    .counter {
+      background: var(--color-dark-grey);
+    }
+
+    .counter__value {
+      width: 100%;
+      height: 15rem;
+      text-align: center;
+      font-size: 6rem;
+      font-weight: 900;
+      background: none;
+      color: var(--color-white);
+      border-width: 0;
+      border-bottom: 1px solid var(--color-light-grey);
+    }
+
+    .counter__actions {
       display: flex;
-      gap: 16px;
-      justify-content: center;
     }
 
-    button {
-      font-size: 1.2rem;
-      padding: 8px 16px;
-      margin: 8px;
+    .counter__button {
+      background: none;
+      width: 50%;
+      border-width: 0;
+      color: var(--color-white);
+      font-size: 3rem;
+      height: 10rem;
+      border-bottom: 1px solid var(--color-light-grey);
+      transition: transform 0.1s;
+      transform: translateY(0);
     }
 
-    .danger {
-      background-color: red;
-      color: white;
+    .counter__button:disabled {
+      opacity: 0.2;
     }
 
-    .success {
-      background-color: green;
-      color: white;
+    .counter__button:active {
+      background: var(--color-medium-grey);
+      transform: translateY(2%);
+    }
+
+    .counter__button_first {
+      border-right: 1px solid var(--color-light-grey);
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--color-dark-grey);
+      color: var(--color-light-grey);
+      padding: 2rem;
+      font-size: 0.8rem;
+      text-align: center;
+    }
+
+    .footer__link {
+      color: var(--color-white);
     }
   `;
 
@@ -97,16 +152,37 @@ class TallyCountApp extends LitElement {
     }
 
     return html`
-      <h1>Tally Count App</h1>
-      <div class="count">${this.count}</div>
-      <p class="reset-message">${message}</p>
-      <div class="buttons">
-        <button class="danger" @click="${this.decreaseCount}">Decrease</button>
-        <button @click="${this.resetCount}">Reset</button>
-        <button class="success" @click="${this.increaseCount}">Increase</button>
+      <div class="header">
+        <h1 class="header__title">Tally Count App</h1>
+      </div>
+      <div class="counter">
+        <div class="counter__value">${this.count}</div>
+        <div class="counter__actions">
+          <button
+            class="counter__button counter__button_first danger"
+            @click="${this.decreaseCount}"
+          >
+            Decrease
+          </button>
+          <button
+            class="counter__button reset counter__button_first"
+            @click="${this.resetCount}"
+          >
+            Reset
+          </button>
+          <button
+            class="counter__button success"
+            @click="${this.increaseCount}"
+          >
+            Increase
+          </button>
+        </div>
+      </div>
+      <div class="footer">
+        <p class="footer__link">${message}</p>
       </div>
     `;
   }
 }
 
-customElements.define("tally-count-app", TallyCountApp);
+customElements.define("tally-count", TallyCountApp);
